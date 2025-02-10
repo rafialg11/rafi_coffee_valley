@@ -6,7 +6,8 @@ const prisma = new PrismaClient();
 export async function GET() {
   try {    
     const beans = await prisma.bean.findMany({
-      take: 3,
+      take: 2,
+      where: { salePrice: { lt:15 } },
       orderBy: { createdAt: "desc" },
     });
 

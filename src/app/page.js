@@ -33,7 +33,7 @@ export default function Home() {
               <h1 className="text-md font-bold my-2">Bean of the Day</h1>
               <p>{bean.name}</p>
               <h1 className="text-md font-bold my-2">Sale Price</h1>
-              <p>${bean.price.toFixed(2)}</p>
+              <p>${bean.salePrice.toFixed(2)}</p>
               <h1 className="text-md font-bold my-2">Description</h1>
               <p>{bean.description}</p>
             </div>

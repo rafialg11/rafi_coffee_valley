@@ -18,9 +18,10 @@ export default function AddDistributor() {
   });
 
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // List negara untuk dropdown (bisa ditambahkan lebih banyak)
+  // List negara untuk dropdown
   const countries = ["United States", "Canada", "United Kingdom", "Indonesia", "Germany"];
 
   const handleChange = (e) => {
@@ -29,18 +30,37 @@ export default function AddDistributor() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    const res = await fetch("/api/distributors/add", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    setLoading(true);
+    setError(null); // Reset error sebelum request baru
 
-    if (res.ok) {
-      router.push("/distributors");
-    } else {
-      const data = await res.json();
-      setError(data.error);
+    try {
+      const response = await fetch("/api/distributors/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",          
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          city: formData.city,
+          state: formData.state,
+          country: formData.country,
+          phone: formData.phone,
+          email: formData.email,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        router.push("/distributors"); // Redirect ke halaman daftar distributor
+      } else {
+        setError(data.error || "Failed to add distributor");
+      }
+    } catch (err) {
+      console.error("Error adding distributor:", err);
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -133,9 +153,10 @@ export default function AddDistributor() {
 
           <button
             type="submit"
-            className="w-full bg-gray-600 text-white p-2 rounded hover:bg-gray-700"
+            className={`w-full p-2 rounded text-white ${loading ? "bg-gray-400" : "bg-gray-600 hover:bg-gray-700"}`}
+            disabled={loading}
           >
-            Submit
+            {loading ? "Submitting..." : "Submit"}
           </button>
         </form>
       </div>

@@ -6,10 +6,10 @@ import Navbar from "@/components/Navbar";
 import { useAuth } from "@/app/hooks/useAuth";
 
 export default function EditDistributor() {
-  useAuth(); 
-
+  useAuth();
+  
   const router = useRouter();
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [formData, setFormData] = useState({
     name: "",
     city: "",
@@ -26,10 +26,10 @@ export default function EditDistributor() {
   
   useEffect(() => {
     const fetchDistributor = async () => {
-      const res = await fetch(`/api/distributors/${id}`);
+      const res = await fetch(`/api/distributors/edit/${id}`);
       if (res.ok) {
         const data = await res.json();
-        setFormData(data); 
+        setFormData(data);
       } else {
         setError("Distributor not found");
       }
@@ -46,8 +46,7 @@ export default function EditDistributor() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Kirim data yang sudah diedit ke API untuk update
-    const res = await fetch(`/api/distributors/${id}`, {
+    const res = await fetch(`/api/distributors/edit/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -69,7 +68,6 @@ export default function EditDistributor() {
       <Navbar />
       <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-md my-4">
         <h2 className="text-2xl font-bold mb-4">Edit Distributor</h2>
-
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block font-semibold">Distributor Name</label>
@@ -82,7 +80,6 @@ export default function EditDistributor() {
               required
             />
           </div>
-
           <div>
             <label className="block font-semibold">City</label>
             <input
@@ -94,7 +91,6 @@ export default function EditDistributor() {
               required
             />
           </div>
-
           <div>
             <label className="block font-semibold">State/Region</label>
             <input
@@ -106,7 +102,6 @@ export default function EditDistributor() {
               required
             />
           </div>
-
           <div>
             <label className="block font-semibold">Country</label>
             <select
@@ -124,7 +119,6 @@ export default function EditDistributor() {
               ))}
             </select>
           </div>
-
           <div>
             <label className="block font-semibold">Phone</label>
             <input
@@ -136,7 +130,6 @@ export default function EditDistributor() {
               required
             />
           </div>
-
           <div>
             <label className="block font-semibold">Email</label>
             <input
@@ -148,7 +141,6 @@ export default function EditDistributor() {
               required
             />
           </div>
-
           <button
             type="submit"
             className="w-full bg-gray-600 text-white p-2 rounded hover:bg-gray-700"
